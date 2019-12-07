@@ -20,13 +20,12 @@ namespace AElfAspNetCoreApplication.Controllers
 
     public class AElfInfoController : AbpController, IRegularController
     {
+        private const string OutPathByDll = "C:\\Xxx\\OutPathByDll"; // necessary
+        private const string SystemPath = "C:\\Xxx\\TestDll"; // necessary
+        
         private readonly IStreamService _streamService;
         private readonly IResponseService _responseService;
         private new ILogger<AElfInfoController> Logger { get; }
-        private string _dllPath = "";
-        private readonly string OutPathByDll = "C:\\Xxx\\OutPathByDll"; //need to specify
-        private string _outputPath = "";
-        private const string SystemPath = "C:\\Xxx\\TestDll"; // dll path made from base64String
 
         public AElfInfoController(IStreamService streamService, IResponseService responseService,
             ILogger<AElfInfoController> logger)
@@ -56,22 +55,22 @@ namespace AElfAspNetCoreApplication.Controllers
 
                 var name = DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss");
                 var dllName = name + ".dll";
-                _dllPath = Path.Combine(SystemPath, dllName);
+                var dllPath = Path.Combine(SystemPath, dllName);
 
-                var isWriteBytesToDllSuccess = await ByteArrayToFileAsync(_dllPath, bytes);
+                var isWriteBytesToDllSuccess = await ByteArrayToFileAsync(dllPath, bytes);
                 if (isWriteBytesToDllSuccess == false)
                 {
                     Logger.LogError($"Write bytes to dll failed!");
                     return Json(new { status = "error", message = "Write bytes to dll failed!" });
                 }
 
-                _outputPath = Path.Combine(OutPathByDll, $"{name}");
-                if (!Directory.Exists(_outputPath))
+                var outputPath = Path.Combine(OutPathByDll, $"{name}");
+                if (!Directory.Exists(outputPath))
                 {
-                    Directory.CreateDirectory(_outputPath);
+                    Directory.CreateDirectory(outputPath);
                 }
 
-                string[] args = { "-p", "-o", $"{_outputPath}", $"{_dllPath}" };
+                string[] args = { "-p", "-o", $"{outputPath}", $"{dllPath}" };
 
                 try
                 {
@@ -83,13 +82,13 @@ namespace AElfAspNetCoreApplication.Controllers
                     return Json(new { status = "error", message = "ILsycmd execute failed." });
                 }
 
-                if (!Directory.Exists(_outputPath))
+                if (!Directory.Exists(outputPath))
                 {
                     Logger.LogError($"ILsycmd execute failed.");
                     return Json(new { status = "error", message = "ILsycmd execute failed." });
                 }
 
-                var jsonResult = await _responseService.GetDictJsonByPath(_outputPath);
+                var jsonResult = await _responseService.GetDictJsonByPath(outputPath);
 
                 Logger.LogDebug("Get json from decompiled files successfully.");
 
