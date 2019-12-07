@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="1.0.2" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+   
+    <ProjectReference Include="..\DecompileProj\DecompileProj.csproj" />
+  </ItemGroup>
+
+</Project>

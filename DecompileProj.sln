@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecompileProj", "DecompileProj\DecompileProj.csproj", "{E126D8D6-5EFC-4A92-B325-4FF2CCECC0BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElfAspNetCoreApplication", "AElfAspNetCoreApplication\AElfAspNetCoreApplication.csproj", "{AD6B401A-6799-4660-8FB4-47D88E93E91A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E126D8D6-5EFC-4A92-B325-4FF2CCECC0BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E126D8D6-5EFC-4A92-B325-4FF2CCECC0BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E126D8D6-5EFC-4A92-B325-4FF2CCECC0BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E126D8D6-5EFC-4A92-B325-4FF2CCECC0BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD6B401A-6799-4660-8FB4-47D88E93E91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD6B401A-6799-4660-8FB4-47D88E93E91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD6B401A-6799-4660-8FB4-47D88E93E91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD6B401A-6799-4660-8FB4-47D88E93E91A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBFF6411-A452-4EF6-80FA-EE329A8C28F3}
+	EndGlobalSection
+EndGlobal

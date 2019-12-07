@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DecompileProj": {
+      "commandName": "Project",
+      "commandLineArgs": "-p -o C:\\Xxx\\TestDll\\output C:\\Xxx\\TestDll\\AElf.Contracts.CrossChain.dll"
+    }
+  }
+}
