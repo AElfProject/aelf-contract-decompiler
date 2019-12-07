@@ -107,9 +107,9 @@ namespace AElfAspNetCoreApplication.Controllers
         #region private methods
         private async Task<bool> ByteArrayToFileAsync(string fileName, byte[] byteArray)
         {
+            await using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             try
             {
-                await using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                 await fs.WriteAsync(byteArray, 0, byteArray.Length);
                 return true;
             }
@@ -117,6 +117,10 @@ namespace AElfAspNetCoreApplication.Controllers
             {
                 Logger.LogError("Exception caught in process: {0}", ex);
                 return false;
+            }
+            finally
+            {
+                await fs.DisposeAsync();
             }
         }
 
