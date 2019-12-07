@@ -26,8 +26,6 @@ Remarks:
     [ProjectOptionRequiresOutputDirectoryValidation]
     public class ILSpyCmdProgram
     {
-        private const string decompileDestination = "C:\\Xxx\\Zips\\Decompiled.zip";
-
         public static void Main(string[] args)
         {
             //await GetDecompiledDir(args);

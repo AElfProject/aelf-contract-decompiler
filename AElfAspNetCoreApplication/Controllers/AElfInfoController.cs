@@ -20,8 +20,8 @@ namespace AElfAspNetCoreApplication.Controllers
 
     public class AElfInfoController : AbpController, IRegularController
     {
-        private const string OutPathByDll = "C:\\Xxx\\OutPathByDll"; // necessary
-        private const string SystemPath = "C:\\Xxx\\TestDll"; // necessary
+        private const string OutPathByDll = @"C:\\Xxx\\OutPathByDll"; // necessary
+        private const string SystemPath = @"C:\\Xxx\\TestDll"; // necessary
         
         private readonly IStreamService _streamService;
         private readonly IResponseService _responseService;
@@ -109,11 +109,9 @@ namespace AElfAspNetCoreApplication.Controllers
         {
             try
             {
-                using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                {
-                    await fs.WriteAsync(byteArray, 0, byteArray.Length);
-                    return true;
-                }
+                await using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+                await fs.WriteAsync(byteArray, 0, byteArray.Length);
+                return true;
             }
             catch (Exception ex)
             {
