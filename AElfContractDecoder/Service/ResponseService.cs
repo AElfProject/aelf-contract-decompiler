@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using AElfAspNetCoreApplication.Models;
+using AElfContractDecoder.Models;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
 
-namespace AElfAspNetCoreApplication.Service
+namespace AElfContractDecoder.Service
 {
     public interface IResponseService
     {

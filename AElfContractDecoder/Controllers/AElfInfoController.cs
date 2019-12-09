@@ -3,15 +3,15 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
-using AElfAspNetCoreApplication.Extension;
-using AElfAspNetCoreApplication.Service;
+using AElfContractDecoder.Extension;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using AElfAspNetCoreApplication.Models;
+using AElfContractDecoder.Models;
+using AElfContractDecoder.Service;
 using Newtonsoft.Json;
 using Volo.Abp;
 
-namespace AElfAspNetCoreApplication.Controllers
+namespace AElfContractDecoder.Controllers
 {
     interface IRegularController
     {

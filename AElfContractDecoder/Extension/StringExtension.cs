@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AElfAspNetCoreApplication.Extension
+namespace AElfContractDecoder.Extension
 {
     public static class StringExtension
     {

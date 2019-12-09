@@ -1,4 +1,4 @@
-﻿namespace AElfAspNetCoreApplication.Models
+﻿namespace AElfContractDecoder.Models
 {
     public class Base64InfoDto
     {

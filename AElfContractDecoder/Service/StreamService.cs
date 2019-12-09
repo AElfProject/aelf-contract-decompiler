@@ -1,8 +1,8 @@
-﻿using DecompileProj;
+﻿using DecompileTool;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 
-namespace AElfAspNetCoreApplication.Service
+namespace AElfContractDecoder.Service
 {
     public interface IStreamService
     {

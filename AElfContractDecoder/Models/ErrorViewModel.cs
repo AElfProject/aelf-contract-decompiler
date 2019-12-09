@@ -1,6 +1,6 @@
 using System;
 
-namespace AElfAspNetCoreApplication.Models
+namespace AElfContractDecoder.Models
 {
     public class ErrorViewModel
     {

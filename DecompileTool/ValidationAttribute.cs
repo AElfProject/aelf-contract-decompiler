@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DecompileProj
+namespace DecompileTool
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ProjectOptionRequiresOutputDirectoryValidationAttribute : ValidationAttribute

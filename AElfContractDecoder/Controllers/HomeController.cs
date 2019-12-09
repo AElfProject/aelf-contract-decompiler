@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using AElfAspNetCoreApplication.Models;
+using AElfContractDecoder.Models;
 
-namespace AElfAspNetCoreApplication.Controllers
+namespace AElfContractDecoder.Controllers
 {
     public class HomeController : Controller
     {

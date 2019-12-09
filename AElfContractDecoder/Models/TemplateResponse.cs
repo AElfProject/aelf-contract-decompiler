@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace AElfAspNetCoreApplication.Models
+namespace AElfContractDecoder.Models
 {
     public class TemplateResponse
     {

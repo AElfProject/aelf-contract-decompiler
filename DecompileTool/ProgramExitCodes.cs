@@ -1,4 +1,4 @@
-﻿namespace DecompileProj
+﻿namespace DecompileTool
 {
     public class ProgramExitCodes
     {

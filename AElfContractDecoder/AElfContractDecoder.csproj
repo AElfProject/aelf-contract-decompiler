@@ -12,8 +12,9 @@
     <PackageReference Include="Volo.Abp.Autofac" Version="1.0.2" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\DecompileProj\DecompileProj.csproj" />
+    <ProjectReference Include="..\DecompileTool\DecompileTool.csproj" />
   </ItemGroup>
 
 </Project>

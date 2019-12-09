@@ -15,7 +15,7 @@ using ICSharpCode.Decompiler.DebugInfo;
 using ICSharpCode.Decompiler;
 using System.Threading.Tasks;
 
-namespace DecompileProj
+namespace DecompileTool
 {
     [Command(Name = "ilspycmd", Description = "dotnet tool for decompiling .NET assemblies and generating portable PDBs",
         ExtendedHelpText = @"

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace DecompileProj
+namespace DecompileTool
 {
     public static class TypesParser
     {

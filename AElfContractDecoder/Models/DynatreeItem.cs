@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace AElfAspNetCoreApplication.Models
+namespace AElfContractDecoder.Models
 {
     public class DynatreeItem
     {
