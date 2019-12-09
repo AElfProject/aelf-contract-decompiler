@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using AElfAspNetCoreApplication.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Volo.Abp.DependencyInjection;
 
 namespace AElfAspNetCoreApplication.Service

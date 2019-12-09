@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Http;
 using AElfAspNetCoreApplication.Models;
 using Newtonsoft.Json;
+using Volo.Abp;
 
 namespace AElfAspNetCoreApplication.Controllers
 {
@@ -54,6 +55,9 @@ namespace AElfAspNetCoreApplication.Controllers
                 var bytes = Convert.FromBase64String(base64String);
 
                 var name = DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss");
+                var guid = Guid.NewGuid().ToString().Substring(0, 10);
+                name = string.Concat(new[] {name, guid});
+
                 var dllName = name + ".dll";
                 var dllPath = Path.Combine(SystemPath, dllName);
 
@@ -100,7 +104,7 @@ namespace AElfAspNetCoreApplication.Controllers
             catch (Exception e)
             {
                 Logger.LogError($"Get decompiled files failed : {e.Message}");
-                throw;
+                throw new UserFriendlyException(e.Message);
             }
         }
 
