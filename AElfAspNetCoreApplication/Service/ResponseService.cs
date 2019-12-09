@@ -34,7 +34,7 @@ namespace AElfAspNetCoreApplication.Service
 
                 foreach (var item in treeItem.children)
                 {
-                    if (item.isFolder)
+                    if (item.IsFolder)
                     {
                         var dict = new SingleDirectory
                         {
@@ -45,7 +45,7 @@ namespace AElfAspNetCoreApplication.Service
 
                         foreach (var child in item.children)
                         {
-                            if (!child.isFolder && !child.Title.StartsWith('.'))
+                            if (!child.IsFolder && !child.Title.StartsWith('.'))
                             {
                                 dict.Files.Add(new SingleFile
                                 {
@@ -55,7 +55,7 @@ namespace AElfAspNetCoreApplication.Service
                                 });
                             }
 
-                            if (child.isFolder)
+                            if (child.IsFolder)
                             {
                                 dict.Directories = new List<SingleDirectory>
                                 {
@@ -67,7 +67,7 @@ namespace AElfAspNetCoreApplication.Service
                         request.Data.Add(dict);
                     }
 
-                    if (!item.isFolder && !item.Title.StartsWith('.'))
+                    if (!item.IsFolder && !item.Title.StartsWith('.'))
                     {
                         var dict = new SingleDirectory
                         {
@@ -81,21 +81,21 @@ namespace AElfAspNetCoreApplication.Service
                     }
                 }
                 request.Code = 0;
-                request.Msg = "success";
+                request.Message = "success";
 
                 return request;
             }
             catch (Exception e)
             {
                 request.Code = -1;
-                request.Msg = $"failed:{e.Message}";
+                request.Message = $"failed:{e.Message}";
                 return null;
             }
         }
 
         private async Task<string> Base64StringFromBytes(string filePath)
         {
-            if (!System.IO.File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 return "Invalid file path";
             }

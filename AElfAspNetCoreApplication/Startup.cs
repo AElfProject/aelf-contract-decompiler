@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 
 namespace AElfAspNetCoreApplication
@@ -22,8 +14,6 @@ namespace AElfAspNetCoreApplication
         {
             _configuration = configuration;
         }
-
-        private const string DefaultCorsPolicyName = "CorsPolicy";
 
         public void ConfigureServices(IServiceCollection services)
         {

@@ -6,7 +6,6 @@ using Volo.Abp.AspNetCore.Mvc;
 using AElfAspNetCoreApplication.Extension;
 using AElfAspNetCoreApplication.Service;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Http;
 using AElfAspNetCoreApplication.Models;
 using Newtonsoft.Json;
@@ -111,9 +110,9 @@ namespace AElfAspNetCoreApplication.Controllers
         #region private methods
         private async Task<bool> ByteArrayToFileAsync(string fileName, byte[] byteArray)
         {
-            await using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             try
             {
+                await using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                 await fs.WriteAsync(byteArray, 0, byteArray.Length);
                 return true;
             }
@@ -121,10 +120,6 @@ namespace AElfAspNetCoreApplication.Controllers
             {
                 Logger.LogError("Exception caught in process: {0}", ex);
                 return false;
-            }
-            finally
-            {
-                await fs.DisposeAsync();
             }
         }
 
