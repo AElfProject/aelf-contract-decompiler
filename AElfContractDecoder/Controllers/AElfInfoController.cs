@@ -44,12 +44,18 @@ namespace AElfContractDecoder.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new
+                        {status = "error", message = "Invalid input.", code = StatusCodes.Status400BadRequest});
+                }
+
                 var base64String = base64InfoDto?.Base64String.Trim();
 
                 if (!base64String.IsBase64String() || string.IsNullOrEmpty(base64String))
                 {
                     Logger.LogError("Invalid input.");
-                    return Json(new
+                    return BadRequest(new
                         {status = "error", message = "Invalid input.", code = StatusCodes.Status400BadRequest});
                 }
 
