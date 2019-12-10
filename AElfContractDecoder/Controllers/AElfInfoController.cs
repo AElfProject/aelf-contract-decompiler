@@ -77,10 +77,10 @@ namespace AElfContractDecoder.Controllers
                 string[] args = {"-p", "-o", $"{outputPath}", $"{dllPath}"};
                 await _streamService.GetLSpyOutputPathAsync(args);
 
-                var jsonResult = await _responseService.GetDictJsonByPath(outputPath);
+                var response = await _responseService.GetDictJsonByPath(outputPath);
                 Logger.LogDebug("Get json from decompiled files successfully.");
 
-                return Json(jsonResult, new JsonSerializerSettings
+                return Json(response, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
