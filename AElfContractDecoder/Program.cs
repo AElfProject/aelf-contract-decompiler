@@ -23,7 +23,6 @@ namespace AElfContractDecoder
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://*:5566");
-                    //webBuilder.UseKestrel(options => options.Listen(IPAddress.Any, 5566));
                 })
                 .UseAutofac();
     }

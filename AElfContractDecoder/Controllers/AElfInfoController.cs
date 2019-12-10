@@ -22,7 +22,7 @@ namespace AElfContractDecoder.Controllers
     {
         private const string OutPathByDll = @"C:\\Xxx\\OutPathByDll"; // necessary
         private const string SystemPath = @"C:\\Xxx\\TestDll"; // necessary
-        
+
         private readonly IStreamService _streamService;
         private readonly IResponseService _responseService;
         private new ILogger<AElfInfoController> Logger { get; }
@@ -40,17 +40,18 @@ namespace AElfContractDecoder.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetFilesByBase64Async([FromBody]Base64InfoDto base64InfoDto)
+        public async Task<IActionResult> GetFilesByBase64Async([FromBody] Base64InfoDto base64InfoDto)
         {
             try
             {
                 var base64String = base64InfoDto.Base64String.Trim();
-                
+
                 if (!base64String.IsBase64String() || string.IsNullOrEmpty(base64String))
                 {
-                    Logger.LogError($"Invalid input.");
-                    return Json(new { status = "error", message = "Invalid input" });
-                };
+                    Logger.LogError("Invalid input.");
+                    throw new UserFriendlyException("Invalid input.");
+                }
+
                 var bytes = Convert.FromBase64String(base64String);
 
                 var name = DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss");
@@ -64,35 +65,15 @@ namespace AElfContractDecoder.Controllers
                 if (isWriteBytesToDllSuccess == false)
                 {
                     Logger.LogError($"Write bytes to dll failed!");
-                    return Json(new { status = "error", message = "Write bytes to dll failed!" });
+                    throw new UserFriendlyException("Write bytes to dll failed!");
                 }
 
                 var outputPath = Path.Combine(OutPathByDll, $"{name}");
-                if (!Directory.Exists(outputPath))
-                {
-                    Directory.CreateDirectory(outputPath);
-                }
-
-                string[] args = { "-p", "-o", $"{outputPath}", $"{dllPath}" };
-
-                try
-                {
-                    await _streamService.GetLSpyOutputPathAsync(args);
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError($"LSpyCmdProgram's Execute meet errors : {e.Message}");
-                    return Json(new { status = "error", message = "ILsycmd execute failed." });
-                }
-
-                if (!Directory.Exists(outputPath))
-                {
-                    Logger.LogError($"ILsycmd execute failed.");
-                    return Json(new { status = "error", message = "ILsycmd execute failed." });
-                }
+                CheckValidDirectory(outputPath);
+                string[] args = {"-p", "-o", $"{outputPath}", $"{dllPath}"};
+                await _streamService.GetLSpyOutputPathAsync(args);
 
                 var jsonResult = await _responseService.GetDictJsonByPath(outputPath);
-
                 Logger.LogDebug("Get json from decompiled files successfully.");
 
                 return Json(jsonResult, new JsonSerializerSettings
@@ -108,6 +89,7 @@ namespace AElfContractDecoder.Controllers
         }
 
         #region private methods
+
         private async Task<bool> ByteArrayToFileAsync(string fileName, byte[] byteArray)
         {
             try
@@ -120,6 +102,14 @@ namespace AElfContractDecoder.Controllers
             {
                 Logger.LogError("Exception caught in process: {0}", ex);
                 return false;
+            }
+        }
+
+        private static void CheckValidDirectory(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
             }
         }
 

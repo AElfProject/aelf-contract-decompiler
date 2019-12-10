@@ -10,16 +10,6 @@ namespace AElfContractDecoder.Models
         [JsonProperty("msg")] public string Message { get; set; }
 
         [JsonProperty("data")] public List<SingleDirectory> Data { get; set; }
-
-        public string JsonToDynatree()
-        {
-            return JsonConvert.SerializeObject(this,
-                Formatting.Indented,
-                new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
-        }
     }
 
     public class SingleDirectory

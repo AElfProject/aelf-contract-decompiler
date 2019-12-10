@@ -93,7 +93,7 @@ namespace AElfContractDecoder.Service
             }
         }
 
-        private async Task<string> Base64StringFromBytes(string filePath)
+        private static async Task<string> Base64StringFromBytes(string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -104,7 +104,7 @@ namespace AElfContractDecoder.Service
             return content;
         }
 
-        static async Task<string> ReadBase64FromDll(string path)
+        private static async Task<string> ReadBase64FromDll(string path)
         {
             //Read base64String from bytes in dll
             try
@@ -126,7 +126,7 @@ namespace AElfContractDecoder.Service
             }
         }
 
-        static string GetFileType(DynatreeItem child)
+        private static string GetFileType(DynatreeItem child)
         {
             var str = child.Title.Substring(child.Title.LastIndexOf('.')) == ".cs" ? "txt" : "xml";
             return str;
