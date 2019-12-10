@@ -44,7 +44,7 @@ namespace AElfContractDecoder.Controllers
         {
             try
             {
-                var base64String = base64InfoDto.Base64String.Trim();
+                var base64String = base64InfoDto?.Base64String.Trim();
 
                 if (!base64String.IsBase64String() || string.IsNullOrEmpty(base64String))
                 {
