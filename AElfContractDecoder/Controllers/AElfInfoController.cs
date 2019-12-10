@@ -49,7 +49,8 @@ namespace AElfContractDecoder.Controllers
                 if (!base64String.IsBase64String() || string.IsNullOrEmpty(base64String))
                 {
                     Logger.LogError("Invalid input.");
-                    throw new UserFriendlyException("Invalid input.");
+                    return Json(new
+                        {status = "error", message = "Invalid input.", code = StatusCodes.Status400BadRequest});
                 }
 
                 var bytes = Convert.FromBase64String(base64String);
@@ -65,7 +66,10 @@ namespace AElfContractDecoder.Controllers
                 if (isWriteBytesToDllSuccess == false)
                 {
                     Logger.LogError($"Write bytes to dll failed!");
-                    throw new UserFriendlyException("Write bytes to dll failed!");
+                    return Json(new
+                    {
+                        status = "error", message = "Write bytes to dll failed!", code = StatusCodes.Status400BadRequest
+                    });
                 }
 
                 var outputPath = Path.Combine(OutPathByDll, $"{name}");
@@ -84,7 +88,7 @@ namespace AElfContractDecoder.Controllers
             catch (Exception e)
             {
                 Logger.LogError($"Get decompiled files failed : {e.Message}");
-                throw new UserFriendlyException(e.Message);
+                return Json(new {status = "error", message = $"{e.Message}", code = StatusCodes.Status400BadRequest});
             }
         }
 
