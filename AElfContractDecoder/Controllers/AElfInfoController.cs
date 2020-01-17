@@ -9,29 +9,25 @@ using Microsoft.AspNetCore.Http;
 using AElfContractDecoder.Models;
 using AElfContractDecoder.Service;
 using Newtonsoft.Json;
-using Volo.Abp;
 
 namespace AElfContractDecoder.Controllers
 {
     interface IRegularController
     {
-        Task<IActionResult> GetFilesByBase64Async(Base64InfoDto base64InfoDto);
+        Task<IActionResult> GetFilesFromBase64Async(Base64StringDto base64StringDto);
     }
 
     public class AElfInfoController : AbpController, IRegularController
     {
-        private const string OutPathByDll = @"C:\\Xxx\\OutPathByDll"; // necessary
-        private const string SystemPath = @"C:\\Xxx\\TestDll"; // necessary
-
-        private readonly IStreamService _streamService;
-        private readonly IResponseService _responseService;
+        private readonly IContractDecoderService _contractDecoderService;
+        private readonly IFileParserService _fileParserService;
         private new ILogger<AElfInfoController> Logger { get; }
 
-        public AElfInfoController(IStreamService streamService, IResponseService responseService,
+        public AElfInfoController(IContractDecoderService contractDecoderService, IFileParserService fileParserService,
             ILogger<AElfInfoController> logger)
         {
-            _streamService = streamService;
-            _responseService = responseService;
+            _contractDecoderService = contractDecoderService;
+            _fileParserService = fileParserService;
             Logger = logger;
         }
 
@@ -40,7 +36,7 @@ namespace AElfContractDecoder.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetFilesByBase64Async([FromBody] Base64InfoDto base64InfoDto)
+        public async Task<IActionResult> GetFilesFromBase64Async([FromBody] Base64StringDto base64StringDto)
         {
             try
             {
@@ -50,7 +46,7 @@ namespace AElfContractDecoder.Controllers
                         {status = "error", message = "Invalid input.", code = StatusCodes.Status400BadRequest});
                 }
 
-                var base64String = base64InfoDto?.Base64String.Trim();
+                var base64String = base64StringDto?.Base64String.Trim();
 
                 if (!base64String.IsBase64String() || string.IsNullOrEmpty(base64String))
                 {
@@ -59,16 +55,11 @@ namespace AElfContractDecoder.Controllers
                         {status = "error", message = "Invalid input.", code = StatusCodes.Status400BadRequest});
                 }
 
-                var bytes = Convert.FromBase64String(base64String);
+                var bytesFromBase64 = Convert.FromBase64String(base64String);
+                var name = GetUniqueName();
+                var dllPath = Path.Combine(DecoderConstants.SystemPath, name + ".dll");
 
-                var name = DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss");
-                var guid = Guid.NewGuid().ToString().Substring(0, 10);
-                name = string.Concat(new[] {name, guid});
-
-                var dllName = name + ".dll";
-                var dllPath = Path.Combine(SystemPath, dllName);
-
-                var isWriteBytesToDllSuccess = await ByteArrayToFileAsync(dllPath, bytes);
+                var isWriteBytesToDllSuccess = await ConvertBytesToFileAsync(dllPath, bytesFromBase64);
                 if (isWriteBytesToDllSuccess == false)
                 {
                     Logger.LogError($"Write bytes to dll failed!");
@@ -78,12 +69,12 @@ namespace AElfContractDecoder.Controllers
                     });
                 }
 
-                var outputPath = Path.Combine(OutPathByDll, $"{name}");
+                var outputPath = Path.Combine(DecoderConstants.OutPathByDll, $"{name}");
                 CheckValidDirectory(outputPath);
                 string[] args = {"-p", "-o", $"{outputPath}", $"{dllPath}"};
-                await _streamService.GetLSpyOutputPathAsync(args);
+                await _contractDecoderService.ExecuteDecodeAsync(args);
 
-                var response = await _responseService.GetDictJsonByPath(outputPath);
+                var response = await _fileParserService.GetResponseTemplateByPath(outputPath);
                 Logger.LogDebug("Get json from decompiled files successfully.");
 
                 return Json(response, new JsonSerializerSettings
@@ -94,13 +85,13 @@ namespace AElfContractDecoder.Controllers
             catch (Exception e)
             {
                 Logger.LogError($"Get decompiled files failed : {e.Message}");
-                return Json(new {status = "error", message = $"{e.Message}", code = StatusCodes.Status400BadRequest});
+                return BadRequest(new {status = "error", message = $"{e.Message}", code = StatusCodes.Status400BadRequest});
             }
         }
 
         #region private methods
 
-        private async Task<bool> ByteArrayToFileAsync(string fileName, byte[] byteArray)
+        private async Task<bool> ConvertBytesToFileAsync(string fileName, byte[] byteArray)
         {
             try
             {
@@ -121,6 +112,14 @@ namespace AElfContractDecoder.Controllers
             {
                 Directory.CreateDirectory(path);
             }
+        }
+
+        private static string GetUniqueName()
+        {
+            var name = DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss");
+            var guid = Guid.NewGuid().ToString().Substring(0, 10);
+            name = string.Concat(new[] {name, guid});
+            return name;
         }
 
         #endregion

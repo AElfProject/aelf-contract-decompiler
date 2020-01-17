@@ -31,7 +31,7 @@ Remarks:
             //await GetDecompiledDir(args);
         }
 
-        public async Task GetDecompiledDir(string[] args)
+        public async Task ExecuteDecodeAsync(string[] args)
         {
             try
             {
@@ -45,12 +45,12 @@ Remarks:
             }
             catch (CommandParsingException ex)
             {
-                System.Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 throw;
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e);
+                Console.WriteLine(e);
                 throw;
             }
         }

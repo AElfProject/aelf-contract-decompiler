@@ -8,21 +8,21 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElfContractDecoder.Service
 {
-    public interface IResponseService
+    public interface IFileParserService
     {
-        Task<TemplateResponse> GetDictJsonByPath(string dictPath);
+        Task<ResponseTemplate> GetResponseTemplateByPath(string dictPath);
     }
 
-    public class ResponseService : IResponseService, ITransientDependency
+    public class FileParserService : IFileParserService, ITransientDependency
     {
-        private ILogger<ResponseService> Logger { get; set; }
-        public ResponseService(ILogger<ResponseService> logger)
+        private ILogger<FileParserService> Logger { get; set; }
+        public FileParserService(ILogger<FileParserService> logger)
         {
             Logger = logger;
         }
-        public async Task<TemplateResponse> GetDictJsonByPath(string dictPath)
+        public async Task<ResponseTemplate> GetResponseTemplateByPath(string dictPath)
         {
-            var request = new TemplateResponse { Data = new List<SingleDirectory>() };
+            var request = new ResponseTemplate { Data = new List<SingleDirectory>() };
             try
             {
                 if (!Directory.Exists(dictPath))
@@ -30,7 +30,7 @@ namespace AElfContractDecoder.Service
                     Logger.LogWarning($"Invalid path : {dictPath}");
                     return null;
                 }
-                DynatreeItem treeItem = new DynatreeItem(new DirectoryInfo(dictPath));
+                var treeItem = new DynatreeItem(new DirectoryInfo(dictPath));
 
                 foreach (var item in treeItem.children)
                 {
@@ -100,11 +100,11 @@ namespace AElfContractDecoder.Service
                 return "Invalid file path";
             }
 
-            var content = await ReadBase64FromDll(filePath);
+            var content = await Base64StringFromDll(filePath);
             return content;
         }
 
-        private static async Task<string> ReadBase64FromDll(string path)
+        private static async Task<string> Base64StringFromDll(string path)
         {
             //Read base64String from bytes in dll
             try

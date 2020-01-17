@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace AElfContractDecoder.Models
 {
-    public class TemplateResponse
+    public class ResponseTemplate
     {
         [JsonProperty("code")] public int Code { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace AElfContractDecoder.Models
 {
-    public class Base64InfoDto
+    public class Base64StringDto
     {
         [Required]
         public string Base64String { get; set; }

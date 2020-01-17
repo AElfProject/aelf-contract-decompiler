@@ -4,17 +4,17 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElfContractDecoder.Service
 {
-    public interface IStreamService
+    public interface IContractDecoderService
     {
-        Task GetLSpyOutputPathAsync(string[] args); // DLL Output path.
+        Task ExecuteDecodeAsync(string[] args); // DLL Output path.
     }
 
-    public class StreamService : IStreamService, ITransientDependency
+    public class ContractDecoderService : IContractDecoderService, ITransientDependency
     {
-        public async Task GetLSpyOutputPathAsync(string[] args)
+        public async Task ExecuteDecodeAsync(string[] args)
         {
             var iLSpyCmd = new ILSpyCmdProgram();
-            await iLSpyCmd.GetDecompiledDir(args);
+            await iLSpyCmd.ExecuteDecodeAsync(args);
         }
     }
 }
