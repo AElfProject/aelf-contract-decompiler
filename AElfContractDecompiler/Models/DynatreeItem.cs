@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace AElfContractDecoder.Models
+namespace AElfContractDecompiler.Models
 {
     public class DynatreeItem
     {

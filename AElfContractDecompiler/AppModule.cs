@@ -5,7 +5,7 @@ using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
 
-namespace AElfContractDecoder
+namespace AElfContractDecompiler
 {
     [DependsOn(typeof(AbpAspNetCoreMvcModule))]
     [DependsOn(typeof(AbpAutofacModule))] //Add dependency to ABP Autofac module

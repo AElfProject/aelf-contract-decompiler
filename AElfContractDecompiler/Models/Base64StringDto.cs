@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AElfContractDecoder.Models
+namespace AElfContractDecompiler.Models
 {
     public class Base64StringDto
     {

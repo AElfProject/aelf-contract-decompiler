@@ -1,6 +1,6 @@
 using System;
 
-namespace AElfContractDecoder.Models
+namespace AElfContractDecompiler.Models
 {
     public class ErrorViewModel
     {

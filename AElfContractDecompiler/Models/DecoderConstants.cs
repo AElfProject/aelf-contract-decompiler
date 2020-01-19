@@ -1,4 +1,4 @@
-namespace AElfContractDecoder.Models
+namespace AElfContractDecompiler.Models
 {
     public static class DecoderConstants
     {

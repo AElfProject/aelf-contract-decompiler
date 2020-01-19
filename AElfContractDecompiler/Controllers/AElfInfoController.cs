@@ -3,14 +3,14 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
-using AElfContractDecoder.Extension;
+using AElfContractDecompiler.Extension;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using AElfContractDecoder.Models;
-using AElfContractDecoder.Service;
+using AElfContractDecompiler.Models;
+using AElfContractDecompiler.Service;
 using Newtonsoft.Json;
 
-namespace AElfContractDecoder.Controllers
+namespace AElfContractDecompiler.Controllers
 {
     interface IRegularController
     {
@@ -19,14 +19,14 @@ namespace AElfContractDecoder.Controllers
 
     public class AElfInfoController : AbpController, IRegularController
     {
-        private readonly IContractDecoderService _contractDecoderService;
+        private readonly IContractDecompileService _contractDecompileService;
         private readonly IFileParserService _fileParserService;
         private new ILogger<AElfInfoController> Logger { get; }
 
-        public AElfInfoController(IContractDecoderService contractDecoderService, IFileParserService fileParserService,
+        public AElfInfoController(IContractDecompileService contractDecompileService, IFileParserService fileParserService,
             ILogger<AElfInfoController> logger)
         {
-            _contractDecoderService = contractDecoderService;
+            _contractDecompileService = contractDecompileService;
             _fileParserService = fileParserService;
             Logger = logger;
         }
@@ -72,7 +72,7 @@ namespace AElfContractDecoder.Controllers
                 var outputPath = Path.Combine(DecoderConstants.OutPathByDll, $"{name}");
                 CheckValidDirectory(outputPath);
                 string[] args = {"-p", "-o", $"{outputPath}", $"{dllPath}"};
-                await _contractDecoderService.ExecuteDecodeAsync(args);
+                await _contractDecompileService.ExecuteDecompileAsync(args);
 
                 var response = await _fileParserService.GetResponseTemplateByPath(outputPath);
                 Logger.LogDebug("Get json from decompiled files successfully.");

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using AElfContractDecoder.Models;
+using AElfContractDecompiler.Models;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
 
-namespace AElfContractDecoder.Service
+namespace AElfContractDecompiler.Service
 {
     public interface IFileParserService
     {

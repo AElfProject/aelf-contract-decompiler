@@ -31,7 +31,7 @@ Remarks:
             //await GetDecompiledDir(args);
         }
 
-        public async Task ExecuteDecodeAsync(string[] args)
+        public async Task DecompileAsync(string[] args)
         {
             try
             {

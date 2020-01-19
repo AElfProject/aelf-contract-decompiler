@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AElfContractDecoder.Extension
+namespace AElfContractDecompiler.Extension
 {
     public static class StringExtension
     {

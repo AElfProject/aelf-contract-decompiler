@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace AElfContractDecoder.Models
+namespace AElfContractDecompiler.Models
 {
     public class ResponseTemplate
     {
