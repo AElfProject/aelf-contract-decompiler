@@ -106,7 +106,7 @@ namespace AElfContractDecoder.Service
 
         private static async Task<string> Base64StringFromDll(string path)
         {
-            //Read base64String from bytes in dll
+            //Read base64String from bytes
             try
             {
                 byte[] bytes;
@@ -122,7 +122,7 @@ namespace AElfContractDecoder.Service
             catch (Exception e)
             {
                 Console.WriteLine($"Read base64 from dll failed:{e.Message}");
-                throw;
+                throw new Exception($"Read base64 from dll failed:{e.Message}");
             }
         }
 

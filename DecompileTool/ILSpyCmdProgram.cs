@@ -45,13 +45,12 @@ Remarks:
             }
             catch (CommandParsingException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine();
                 throw;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                throw new Exception("ex.Message");
             }
         }
 
