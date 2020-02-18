@@ -1,8 +1,16 @@
+using System;
+using System.IO;
+
 namespace AElfContractDecompiler.Models
 {
     public static class DecoderConstants
     {
-        public const string OutPathByDll = @"C:\\Xxx\\OutPathByDll"; // directory of output
-        public const string SystemPath = @"C:\\Xxx\\TestDll"; // directory of dll
+        private static readonly string UserPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        // directory of decompiled contracts
+        public static readonly string ContractsPath = Path.Combine(UserPath, "ContractsDecompiled");
+
+        // directory of input dll
+        public static readonly string DllPath = Path.Combine(UserPath, "DllInputs");
     }
 }

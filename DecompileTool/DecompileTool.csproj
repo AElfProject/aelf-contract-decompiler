@@ -16,12 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.4.3" />
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.5.1" />
         <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
         <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
         <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
         <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
-        <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.1.5145" />
+        <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.2.5153" />
   </ItemGroup>
 
 </Project>

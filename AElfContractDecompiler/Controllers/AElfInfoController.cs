@@ -57,7 +57,8 @@ namespace AElfContractDecompiler.Controllers
 
                 var bytesFromBase64 = Convert.FromBase64String(base64String);
                 var name = GetUniqueName();
-                var dllPath = Path.Combine(DecoderConstants.SystemPath, name + ".dll");
+                CheckValidDirectory(DecoderConstants.DllPath);
+                var dllPath = Path.Combine(DecoderConstants.DllPath, name + ".dll");
 
                 var isWriteBytesToDllSuccess = await ConvertBytesToFileAsync(dllPath, bytesFromBase64);
                 if (isWriteBytesToDllSuccess == false)
@@ -69,12 +70,14 @@ namespace AElfContractDecompiler.Controllers
                     });
                 }
 
-                var outputPath = Path.Combine(DecoderConstants.OutPathByDll, $"{name}");
-                CheckValidDirectory(outputPath);
-                string[] args = {"-p", "-o", $"{outputPath}", $"{dllPath}"};
+                CheckValidDirectory(DecoderConstants.ContractsPath);
+                var contractPath = Path.Combine(DecoderConstants.ContractsPath, $"{name}");
+                CheckValidDirectory(contractPath);
+
+                string[] args = {"-p", "-o", $"{contractPath}", $"{dllPath}"};
                 await _contractDecompileService.ExecuteDecompileAsync(args);
 
-                var response = await _fileParserService.GetResponseTemplateByPath(outputPath);
+                var response = await _fileParserService.GetResponseTemplateByPath(contractPath);
                 Logger.LogDebug("Get json from decompiled files successfully.");
 
                 return Json(response, new JsonSerializerSettings
