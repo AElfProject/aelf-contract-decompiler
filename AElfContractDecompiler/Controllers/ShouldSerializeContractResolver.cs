@@ -14,7 +14,7 @@ namespace AElfContractDecompiler.Controllers
         {
             JsonProperty property = base.CreateProperty(member, memberSerialization);
 
-            if (property.DeclaringType == typeof(List<SingleDirectory>))
+            if (property.DeclaringType == typeof(List<SingleDirectory>) && property.PropertyName == "Directories")
             {
                 property.ShouldSerialize =
                     instance =>
@@ -24,7 +24,7 @@ namespace AElfContractDecompiler.Controllers
                     };
             }
 
-            if (property.DeclaringType == typeof(List<SingleFile>))
+            if (property.DeclaringType == typeof(List<SingleFile>) && property.PropertyName == "files")
             {
                 property.ShouldSerialize =
                     instance =>
