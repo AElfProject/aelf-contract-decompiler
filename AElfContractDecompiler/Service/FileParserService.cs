@@ -57,16 +57,18 @@ namespace AElfContractDecompiler.Service
             {
                 item.DictContent = await Base64StringFromBytes(item.FileFullPath);
             }
-
-            foreach (var child in item.Directories)
+            else
             {
-                if (!child.IsFolder)
+                foreach (var child in item.Directories)
                 {
-                    item.DictContent = await Base64StringFromBytes(item.FileFullPath);
-                }
-                else
-                {
-                    await FillContentsAsync(child);
+                    if (!child.IsFolder)
+                    {
+                        item.DictContent = await Base64StringFromBytes(item.FileFullPath);
+                    }
+                    else
+                    {
+                        await FillContentsAsync(child);
+                    }
                 }
             }
         }
