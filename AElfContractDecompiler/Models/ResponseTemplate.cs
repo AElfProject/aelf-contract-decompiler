@@ -26,6 +26,7 @@ namespace AElfContractDecompiler.Models
         [JsonProperty("fileType")] public string DictType { get; set; }
 
         [JsonIgnore] public bool IsFolder { get; set; }
+        [JsonIgnore] public string FileFullPath { get; set; }
 
         public SingleDirectory(DynatreeItem item)
         {
@@ -40,26 +41,24 @@ namespace AElfContractDecompiler.Models
             if (!item.IsFolder && !item.Title.StartsWith('.'))
             {
                 DictType = GetFileType(item);
+                FileFullPath = item.FileFullPath;
             }
 
             else if (item.IsFolder)
             {
-                Directories = new List<SingleDirectory>();
-                Files = new List<SingleFile>();
                 foreach (var child in item.children)
                 {
                     var dict = new SingleDirectory(child);
                     if (dict.IsFolder)
                     {
-                        Directories.Add(dict);
+                        Directories = new List<SingleDirectory> {dict};
                     }
                     else
                     {
-                        Files.Add(new SingleFile
+                        Files = new List<SingleFile>
                         {
-                            FileName = child.Title,
-                            FileType = GetFileType(child)
-                        });
+                            new SingleFile {FileName = child.Title, FileType = GetFileType(child), FileFullPath = child.FileFullPath}
+                        };
                     }
                 }
             }
@@ -79,5 +78,6 @@ namespace AElfContractDecompiler.Models
         [JsonProperty("content")] public string FileContent { get; set; }
 
         [JsonProperty("fileType")] public string FileType { get; set; }
+        [JsonIgnore] public string FileFullPath { get; set; }
     }
 }
