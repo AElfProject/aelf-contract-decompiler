@@ -34,51 +34,52 @@ namespace AElfContractDecompiler.Service
 
                 foreach (var item in treeItem.children)
                 {
-                    if (item.IsFolder)
-                    {
-                        var dict = new SingleDirectory
-                        {
-                            DictOrFileName = item.Title,
-                            IsFolder = true,
-                            Files = new List<SingleFile>()
-                        };
-
-                        foreach (var child in item.children)
-                        {
-                            if (!child.IsFolder && !child.Title.StartsWith('.'))
-                            {
-                                dict.Files.Add(new SingleFile
-                                {
-                                    FileName = child.Title,
-                                    FileContent = await Base64StringFromBytes(child.FileFullPath), //fix
-                                    FileType = GetFileType(child)
-                                });
-                            }
-
-                            if (child.IsFolder)
-                            {
-                                dict.Directories = new List<SingleDirectory>
-                                {
-                                    new SingleDirectory {DictOrFileName = child.Title, IsFolder = true}
-                                };
-                            }
-                        }
-
-                        request.Data.Add(dict);
-                    }
-
-                    if (!item.IsFolder && !item.Title.StartsWith('.'))
-                    {
-                        var dict = new SingleDirectory
-                        {
-                            DictOrFileName = item.Title,
-                            DictContent = await Base64StringFromBytes(item.FileFullPath),
-                            IsFolder = false,
-                            DictType = GetFileType(item)
-                        };
-
-                        request.Data.Add(dict);
-                    }
+                    request.Data.Add(new SingleDirectory(item));
+//                    if (item.IsFolder)
+//                    {
+//                        var dict = new SingleDirectory
+//                        {
+//                            DictOrFileName = item.Title,
+//                            IsFolder = true,
+//                            Files = new List<SingleFile>()
+//                        };
+//
+//                        foreach (var child in item.children)
+//                        {
+//                            if (!child.IsFolder && !child.Title.StartsWith('.'))
+//                            {
+//                                dict.Files.Add(new SingleFile
+//                                {
+//                                    FileName = child.Title,
+//                                    FileContent = await Base64StringFromBytes(child.FileFullPath), //fix
+//                                    FileType = GetFileType(child)
+//                                });
+//                            }
+//
+//                            if (child.IsFolder)
+//                            {
+//                                dict.Directories = new List<SingleDirectory>
+//                                {
+//                                    new SingleDirectory {DictOrFileName = child.Title, IsFolder = true}
+//                                };
+//                            }
+//                        }
+//
+//                        request.Data.Add(dict);
+//                    }
+//
+//                    if (!item.IsFolder && !item.Title.StartsWith('.'))
+//                    {
+//                        var dict = new SingleDirectory
+//                        {
+//                            DictOrFileName = item.Title,
+//                            DictContent = await Base64StringFromBytes(item.FileFullPath),
+//                            IsFolder = false,
+//                            DictType = GetFileType(item)
+//                        };
+//
+//                        request.Data.Add(dict);
+//                    }
                 }
                 request.Code = 0;
                 request.Message = "success";
