@@ -47,28 +47,26 @@ namespace AElfContractDecompiler.Service
             {
                 request.Code = -1;
                 request.Message = $"failed:{e.Message}";
-                return null;
+                return request;
             }
         }
 
         private static async Task FillContentsAsync(SingleDirectory item)
         {
-            if (!item.IsFolder)
+            foreach (var file in item.Files)
             {
-                item.DictContent = await Base64StringFromBytes(item.FileFullPath);
+                file.FileContent = await Base64StringFromBytes(file.FileFullPath);
             }
-            else
+
+            foreach (var child in item.Directories)
             {
-                foreach (var child in item.Directories)
+                if (!child.IsFolder)
                 {
-                    if (!child.IsFolder)
-                    {
-                        item.DictContent = await Base64StringFromBytes(item.FileFullPath);
-                    }
-                    else
-                    {
-                        await FillContentsAsync(child);
-                    }
+                    child.DictContent = await Base64StringFromBytes(child.FileFullPath);
+                }
+                else
+                {
+                    await FillContentsAsync(child);
                 }
             }
         }
