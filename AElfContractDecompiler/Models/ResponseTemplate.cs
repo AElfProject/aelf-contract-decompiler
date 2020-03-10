@@ -46,12 +46,13 @@ namespace AElfContractDecompiler.Models
 
             else if (item.IsFolder)
             {
+                Directories = new List<SingleDirectory>();
                 foreach (var child in item.children)
                 {
                     var dict = new SingleDirectory(child);
                     if (dict.IsFolder)
                     {
-                        Directories = new List<SingleDirectory> {dict};
+                        Directories.Add(dict);
                     }
                     else
                     {
