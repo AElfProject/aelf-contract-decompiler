@@ -92,9 +92,9 @@ namespace AElfContractDecompiler.Service
                 var version = array.Substring(i + 1, j - i - 1);
                 return version;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "null";
+                return $"{e.Message}";
             }
         }
 
