@@ -37,6 +37,8 @@ namespace AElfContractDecompiler.Models
 
             DictOrFileName = item.Title;
             IsFolder = item.IsFolder;
+            Files = new List<SingleFile>();
+            Directories = new List<SingleDirectory>();
 
             if (!item.IsFolder && !item.Title.StartsWith('.'))
             {
@@ -46,20 +48,19 @@ namespace AElfContractDecompiler.Models
 
             else if (item.IsFolder)
             {
-                Directories = new List<SingleDirectory>();
                 foreach (var child in item.children)
                 {
                     var dict = new SingleDirectory(child);
                     if (dict.IsFolder)
                     {
-                        Directories.Add(dict);
+                        Directories = new List<SingleDirectory> {dict};
                     }
                     else
                     {
-                        Files = new List<SingleFile>
-                        {
-                            new SingleFile {FileName = child.Title, FileType = GetFileType(child), FileFullPath = child.FileFullPath}
-                        };
+                        Files.Add(new SingleFile
+                            {
+                                FileName = child.Title, FileType = GetFileType(child), FileFullPath = child.FileFullPath
+                            });
                     }
                 }
             }
