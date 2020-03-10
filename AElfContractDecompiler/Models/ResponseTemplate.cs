@@ -10,6 +10,8 @@ namespace AElfContractDecompiler.Models
 
         [JsonProperty("msg")] public string Message { get; set; }
 
+        [JsonProperty("version")] public string Version { get; set; }
+
         [JsonProperty("data")] public List<SingleDirectory> Data { get; set; }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AElfContractDecompiler.Models;
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,7 @@ namespace AElfContractDecompiler.Service
                 }
                 request.Code = 0;
                 request.Message = "success";
-
+                request.Version = await GetVersionAsync(Path.Combine(dictPath, "Properties","AssemblyInfo.cs"));
                 return request;
             }
             catch (Exception e)
@@ -73,6 +74,27 @@ namespace AElfContractDecompiler.Service
                 {
                     await FillContentsAsync(child);
                 }
+            }
+        }
+
+        private static async Task<string> GetVersionAsync(string filePath)
+        {
+            try
+            {
+                var array = (await File.ReadAllLinesAsync(filePath)).LastOrDefault();
+                if (string.IsNullOrEmpty(array))
+                {
+                    return "assembly info not exists.";
+                }
+
+                var i = array.IndexOf('"');
+                var j = array.LastIndexOf('"');
+                var version = array.Substring(i + 1, j - i - 1);
+                return version;
+            }
+            catch (Exception)
+            {
+                return "null";
             }
         }
 
