@@ -46,25 +46,30 @@ namespace AElfContractDecompiler.Service
             catch (Exception e)
             {
                 request.Code = -1;
-                request.Message = $"failed:{e.Message}";
+                request.Message = $"error : {e.Message}";
                 return request;
             }
         }
 
         private static async Task FillContentsAsync(SingleDirectory item)
         {
-            foreach (var file in item.Files)
+            if (!item.IsFolder)
             {
-                file.FileContent = await Base64StringFromBytes(file.FileFullPath);
+                item.DictContent = await Base64StringFromBytes(item.FileFullPath);
+                return;
             }
 
-            foreach (var child in item.Directories)
+            if (item.Files != null)
             {
-                if (!child.IsFolder)
+                foreach (var file in item.Files)
                 {
-                    child.DictContent = await Base64StringFromBytes(child.FileFullPath);
+                    file.FileContent = await Base64StringFromBytes(file.FileFullPath);
                 }
-                else
+            }
+
+            if (item.Directories != null)
+            {
+                foreach (var child in item.Directories)
                 {
                     await FillContentsAsync(child);
                 }
