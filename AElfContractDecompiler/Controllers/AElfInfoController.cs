@@ -82,8 +82,7 @@ namespace AElfContractDecompiler.Controllers
 
                 return Json(response, new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    ContractResolver = ShouldSerializeContractResolver.Instance
+                    NullValueHandling = NullValueHandling.Ignore
                 });
             }
             catch (Exception e)

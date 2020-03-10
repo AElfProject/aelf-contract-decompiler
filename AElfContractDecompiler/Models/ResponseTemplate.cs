@@ -65,7 +65,17 @@ namespace AElfContractDecompiler.Models
                 }
             }
         }
-        
+
+        public bool ShouldSerializeDirectories()
+        {
+            return Directories?.Count > 0;
+        }
+
+        public bool ShouldSerializeFiles()
+        {
+            return Files?.Count > 0;
+        }
+
         private static string GetFileType(DynatreeItem child)
         {
             var str = child.Title.Substring(child.Title.LastIndexOf('.')) == ".cs" ? "txt" : "xml";
