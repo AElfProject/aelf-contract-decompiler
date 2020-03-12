@@ -55,7 +55,7 @@ namespace AElfContractDecompiler.Models
                     var dict = new SingleDirectory(child);
                     if (dict.IsFolder)
                     {
-                        Directories = new List<SingleDirectory> {dict};
+                        Directories.Add(dict);
                     }
                     else
                     {
