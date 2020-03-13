@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AElfContractDecompiler.Models;
 using Microsoft.Extensions.Logging;
@@ -34,62 +35,66 @@ namespace AElfContractDecompiler.Service
 
                 foreach (var item in treeItem.children)
                 {
-                    if (item.IsFolder)
-                    {
-                        var dict = new SingleDirectory
-                        {
-                            DictOrFileName = item.Title,
-                            IsFolder = true,
-                            Files = new List<SingleFile>()
-                        };
-
-                        foreach (var child in item.children)
-                        {
-                            if (!child.IsFolder && !child.Title.StartsWith('.'))
-                            {
-                                dict.Files.Add(new SingleFile
-                                {
-                                    FileName = child.Title,
-                                    FileContent = await Base64StringFromBytes(child.FileFullPath), //fix
-                                    FileType = GetFileType(child)
-                                });
-                            }
-
-                            if (child.IsFolder)
-                            {
-                                dict.Directories = new List<SingleDirectory>
-                                {
-                                    new SingleDirectory {DictOrFileName = child.Title, IsFolder = true}
-                                };
-                            }
-                        }
-
-                        request.Data.Add(dict);
-                    }
-
-                    if (!item.IsFolder && !item.Title.StartsWith('.'))
-                    {
-                        var dict = new SingleDirectory
-                        {
-                            DictOrFileName = item.Title,
-                            DictContent = await Base64StringFromBytes(item.FileFullPath),
-                            IsFolder = false,
-                            DictType = GetFileType(item)
-                        };
-
-                        request.Data.Add(dict);
-                    }
+                    var single = new SingleDirectory(item);
+                    await FillContentsAsync(single);
+                    request.Data.Add(single);
                 }
                 request.Code = 0;
                 request.Message = "success";
-
+                request.Version = await GetVersionAsync(Path.Combine(dictPath, "Properties","AssemblyInfo.cs"));
                 return request;
             }
             catch (Exception e)
             {
                 request.Code = -1;
-                request.Message = $"failed:{e.Message}";
-                return null;
+                request.Message = $"error : {e.Message}";
+                return request;
+            }
+        }
+
+        private static async Task FillContentsAsync(SingleDirectory item)
+        {
+            if (!item.IsFolder)
+            {
+                item.DictContent = await Base64StringFromBytes(item.FileFullPath);
+                return;
+            }
+
+            if (item.Files != null)
+            {
+                foreach (var file in item.Files)
+                {
+                    file.FileContent = await Base64StringFromBytes(file.FileFullPath);
+                }
+            }
+
+            if (item.Directories != null)
+            {
+                foreach (var child in item.Directories)
+                {
+                    await FillContentsAsync(child);
+                }
+            }
+        }
+
+        private static async Task<string> GetVersionAsync(string filePath)
+        {
+            try
+            {
+                var array = (await File.ReadAllLinesAsync(filePath)).LastOrDefault();
+                if (string.IsNullOrEmpty(array))
+                {
+                    return "assembly info not exists.";
+                }
+
+                var i = array.IndexOf('"');
+                var j = array.LastIndexOf('"');
+                var version = array.Substring(i + 1, j - i - 1);
+                return version;
+            }
+            catch (Exception e)
+            {
+                return $"{e.Message}";
             }
         }
 
@@ -124,12 +129,6 @@ namespace AElfContractDecompiler.Service
                 Console.WriteLine($"Read base64 from dll failed:{e.Message}");
                 throw new Exception($"Read base64 from dll failed:{e.Message}");
             }
-        }
-
-        private static string GetFileType(DynatreeItem child)
-        {
-            var str = child.Title.Substring(child.Title.LastIndexOf('.')) == ".cs" ? "txt" : "xml";
-            return str;
         }
     }
 }
